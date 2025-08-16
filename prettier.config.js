@@ -6,4 +6,5 @@ export default {
   printWidth: 80,         // Wrap lines at 80 chars
   tabWidth: 2,            // 2 spaces per tab
   endOfLine: 'lf',        // Use LF line endings
+  "plugins": ["prettier-plugin-tailwindcss"],
 };
