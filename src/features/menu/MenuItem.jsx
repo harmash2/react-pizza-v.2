@@ -1,9 +1,27 @@
+import { addItem, currentQuantity } from '../cart/cartSlice';
+import DeleteItem from '../cart/DeleteItem';
+import UpdateQuantity from '../cart/UpdateQuantity';
 import Button from '../ui/Button';
 import { formatCurrency } from '../utilities/helpers';
+import { useDispatch, useSelector } from 'react-redux';
 
 function MenuItem({ pizza }) {
   // eslint-disable-next-line
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
+  const dispatch = useDispatch();
+  const quantity = useSelector(currentQuantity(id));
+  const isInCart = quantity > 0;
+  function handleAddToCart() {
+    const newItem = {
+      pizzaId: id,
+      name,
+      quantity: 1,
+      unitPrice,
+      totalPrice: unitPrice * 1,
+    };
+
+    dispatch(addItem(newItem));
+  }
 
   return (
     <li className="flex gap-4 py-2">
@@ -25,8 +43,18 @@ function MenuItem({ pizza }) {
               Sold out
             </p>
           )}
+          {isInCart && (
+            <div className="flex items-center gap-3 sm:gap-8">
+              <UpdateQuantity pizzaId={id} currQuantity={quantity} />
+              <DeleteItem pizzaId={id} />
+            </div>
+          )}
 
-          <Button type="small">Add to cart</Button>
+          {!soldOut && !isInCart && (
+            <Button type="small" onClick={handleAddToCart}>
+              Add to cart
+            </Button>
+          )}
         </div>
       </div>
     </li>

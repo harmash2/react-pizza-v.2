@@ -1,13 +1,14 @@
-import { createBrowserRouter } from "react-router-dom";
-import Home from "./features/ui/Home";
-import Cart from "./features/cart/Cart";
-import Menu, { loader as menuLoader } from "./features/menu/Menu";
-import Order, { loader as loaderOrder } from "./features/order/Order";
+import { createBrowserRouter } from 'react-router-dom';
+import Home from './features/ui/Home';
+import Cart from './features/cart/Cart';
+import Menu, { loader as menuLoader } from './features/menu/Menu';
+import Order, { loader as loaderOrder } from './features/order/Order';
 import CreateOrder, {
   action as actionCreateOrder,
-} from "./features/order/CreateOrder";
-import AppLayout from "./features/ui/AppLayout";
-import Error from "./features/ui/Error";
+} from './features/order/CreateOrder';
+import AppLayout from './features/ui/AppLayout';
+import { action as updateOrderAction } from './features/order/UpdateOrder';
+import Error from './features/ui/Error';
 
 //! Algorithm of routing via react-router-dom
 // usefull for dataLoaders, data actions and data fetching
@@ -36,11 +37,11 @@ import Error from "./features/ui/Error";
 // }
 //? use <input type='hidden' name='...' value={...}/> to access neccessary data from component
 //* 3) Make a new obj spreading received data like:
-  // const order = {
-  //   ...data,
-  //   priority: data.priority === 'on',
-  //   cart: JSON.parse(data.cart)
-  // }
+// const order = {
+//   ...data,
+//   priority: data.priority === 'on',
+//   cart: JSON.parse(data.cart)
+// }
 //* redirect(`/order/${newOrder}`); if neccessary
 
 //* 4) Connect f and route inside route as action value
@@ -61,30 +62,31 @@ export const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        path: "/",
+        path: '/',
         element: <Home />,
       },
       {
-        path: "/menu",
+        path: '/menu',
         element: <Menu />,
         loader: menuLoader,
         errorElement: <Error />,
       },
       {
-        path: "/cart",
+        path: '/cart',
         element: <Cart />,
       },
       {
-        path: "/order/new",
+        path: '/order/new',
         element: <CreateOrder />,
         action: actionCreateOrder,
         errorElement: <Error />,
       },
       {
-        path: "/order/:orderId",
+        path: '/order/:orderId',
         element: <Order />,
         loader: loaderOrder,
         errorElement: <Error />,
+        action: updateOrderAction,
       },
     ],
   },
